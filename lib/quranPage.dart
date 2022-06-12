@@ -47,7 +47,14 @@ class _QuranPageState extends State<QuranPage> {
 class MyPainter extends CustomPainter {
   //         <-- CustomPainter class
   String text;
-  MyPainter(this.text);
+  int n=0;
+  List<String> lst=[];
+  MyPainter(this.text){
+    text=text.trim();
+    lst=text.split(' ');
+    n=lst.length;
+
+  }
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -59,6 +66,8 @@ class MyPainter extends CustomPainter {
       fontFamily: 'Hafs',
       fontSize: 23,
     );
+    //text = lst[0]+'   ';
+
     final textSpan = TextSpan(
       text: text,
       style: textStyle,
@@ -68,6 +77,7 @@ class MyPainter extends CustomPainter {
       textAlign: TextAlign.left,
       textDirection: TextDirection.rtl,
     );
+
     textPainter.layout(
       minWidth: 0,
       maxWidth: double.infinity,
@@ -75,7 +85,36 @@ class MyPainter extends CustomPainter {
     final xCenter = (size.width - textPainter.width) ;
     final yCenter = (size.height - textPainter.height) / 2;
     final offset = Offset(xCenter, 0);
-    textPainter.paint(canvas, offset);
+    print(xCenter);
+    int numspaces=xCenter~/12-1;
+    print(numspaces);
+    text='';
+    for(int i=0;i<numspaces;i++) {
+      text +=lst[i]+'  ';
+    }
+    for(int x=numspaces;x<n;x++)
+      {
+        text +=lst[x]+' ';
+      }
+
+    print(text);
+    final textSpan2 = TextSpan(
+      text: text,
+      style: textStyle,
+    );
+    final textPainter2 = TextPainter(
+      text: textSpan2,
+      textAlign: TextAlign.right,
+      textDirection: TextDirection.rtl,
+
+    );
+    textPainter2.layout(
+      minWidth: 0,
+      maxWidth: double.infinity,
+    );
+
+
+    textPainter2.paint(canvas, Offset(size.width - textPainter2.width,0));
   }
 
   @override
